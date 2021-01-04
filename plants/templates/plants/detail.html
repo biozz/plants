@@ -1,0 +1,55 @@
+{% extends 'plants/layout.html' %}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <a href="{% url 'index' %}">На главную</a>
+                <h1>{{ plant.name }}</h1>
+                <h5 class="text-muted">
+                    {% if plant.name_alt %} {{ plant.name_alt }}{% endif %}{% if plant.name_en %}, {{ plant.name_en }}{% endif %}</h5>
+                <p>{% if plant.wikipedia_url %}<a href="{{ plant.wikipedia_url }}" target="_blank">Wikipedia</a>{% endif %}
+                   {% if plant.plantnet_url %} <a href="#">Pl@ntNet</a> {% endif %}
+                   {% if plant.gbif_id %} <a href="#">GBIF</a>{% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4>Польза</h4>
+                <p class="text-success">
+                    {% include 'plants/_plant_fill_me_in.html' with data=plant.benefit %}
+                </p>
+            </div>
+            <div class="col">
+                <h4>Вред</h4>
+                <p class="text-danger">
+                    {% include 'plants/_plant_fill_me_in.html' with data=plant.harm %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <h2>Где, когда и как собирать и заготавливать</h2>
+                <p><b>Где</b>: {% include 'plants/_plant_fill_me_in.html' with data=plant.where %}</p>
+                <p><b>Когда</b>: {% include 'plants/_plant_fill_me_in.html' with data=plant.when %}</p>
+                <p><b>Как заготавливать</b>: {% include 'plants/_plant_fill_me_in.html' with data=plant.how %}</p>
+            </div>
+            {% if plant.images.all.count > 0 %}
+            <div class="col-4">
+                <img src="{{ plant.images.all.0.image.url }}" alt="" width="100%" class="rounded">
+            </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Примечания</h2>
+                <p>{% if plant.comment %}{{ plant.comment }}{% else %}-{% endif %}</p>
+                <h2>История</h2>
+                <p>{% if plant.history %}{{ plant.history }}{% else %}-{% endif %}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

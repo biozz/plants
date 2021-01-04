@@ -1,0 +1,19 @@
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-2">
+            {% if plant.thumbnail %}
+                <img src="{{ plant.thumbnail.url }}" alt="{{ plant.name }} image" width="100%">
+            {% endif %}
+        </div>
+        <div class="col-md-10">
+            <div class="card-body">
+                <h5 class="card-title">{{ plant.name }}</h5>
+                <small class="text-muted">{{ plant.name_alt }}{% if plant.name_en %}, {{ plant.name_en }}{% endif %}</small>
+                {% if plant.where %}
+                    <p class="card-text">Где найти: {{ plant.where }}</p>
+                {% endif %}
+                <p><a href="{% url 'plants:detail' plant.id %}" class="card-link">Подробнее</a></p>
+            </div>
+        </div>
+    </div>
+</div>

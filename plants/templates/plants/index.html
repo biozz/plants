@@ -1,0 +1,35 @@
+{% extends 'plants/layout.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+    <div class="col-12">
+        <h1>Растения</h1>
+        <p>База данных растений с полезными свойствами и не только.</p>
+        <h2>Цветут сейчас</h2>
+        {% for plant in blooming %}
+            {% include 'plants/_plant_card.html' with plant=plant add_bloom_countdown=False %}
+        {% endfor %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <h2>Скоро зацветут</h2>
+        {% for plant in soon %}
+            {% include 'plants/_plant_card_small.html' %}
+        {% endfor %}
+    </div>
+    <div class="col-6">
+        <h2>Скоро собирать</h2>
+        {% for plant in soon %}
+            {% include 'plants/_plant_card_small.html' %}
+        {% endfor %}
+    </div>
+</div>
+    <div class="row">
+        <div class="col"><a href="{% url 'plants:all' %}">Все растения</a></div>
+    </div>
+</div>
+{% endblock %}
