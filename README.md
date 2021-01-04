@@ -1,4 +1,4 @@
-# django-plants
+# plants
 
 A web app to collect information about plants. 
 
