@@ -26,16 +26,25 @@ class Image(models.Model):
 
 class Plant(models.Model):
     # foreign keys
-    user = models.ForeignKey('auth.User', null=True, blank=True, related_name='plants', on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        "auth.User",
+        null=True,
+        blank=True,
+        related_name="plants",
+        on_delete=models.PROTECT,
+    )
 
     # names
     name = models.TextField(unique=True, help_text="Main name, must be unique")
+    name_lat = models.TextField(
+        null=True, blank=True, help_text="Name of the plant in latin"
+    )
+    name_en = models.TextField(null=True, blank=True, help_text="Name in English")
     name_alt = models.TextField(
         null=True,
         blank=True,
-        help_text="Alternative name, i.e. in latin or other common names",
+        help_text="Alternative name or other common names",
     )
-    name_en = models.TextField(null=True, blank=True, help_text="Name in English")
 
     # properties
     when = models.TextField(null=True, blank=True)
