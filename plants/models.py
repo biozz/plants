@@ -25,6 +25,9 @@ class Image(models.Model):
 
 
 class Plant(models.Model):
+    # foreign keys
+    user = models.ForeignKey('auth.User', null=True, blank=True, related_name='plants', on_delete=models.PROTECT)
+
     # names
     name = models.TextField(unique=True, help_text="Main name, must be unique")
     name_alt = models.TextField(
