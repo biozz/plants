@@ -2,7 +2,6 @@ import datetime as dt
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic
@@ -35,6 +34,7 @@ class PlantsAll(generic.ListView):
     paginate_by = 5
 
 
+@method_decorator(login_required, name="dispatch")
 class PlantDetail(generic.DetailView):
     model = Plant
     template_name = "plants/detail.html"
