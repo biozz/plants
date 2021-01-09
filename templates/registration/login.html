@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="form-login text-center">
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" method="post">
             {% csrf_token %}
             <div class="text-start">
                 <label for="{{ form.username.id_for_label }}" class="visually-hidden">Имя пользователя</label>
