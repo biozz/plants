@@ -1,21 +1,13 @@
-import datetime as dt
-
-from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages import get_messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
-from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
+from django.urls import reverse
 from django.views import generic
 
 from .models import Plant
-
-
-def _is_between_dates(ref: dt.date, start, end):
-    if start and end:
-        when1 = dt.date(ref.year, start.month, start.day)
-        when2 = dt.date(ref.year, end.month, end.day)
-        if when1 <= ref <= when2:
-            return True
-    return False
 
 
 class PlantsRecent(generic.ListView):
@@ -28,40 +20,63 @@ class PlantsRecent(generic.ListView):
 
 
 class PlantsAll(generic.ListView):
-    template_name = "plants/all.html"
+    template_name = "plants/list.html"
+    model = Plant
+    context_object_name = "plants"
+    ordering = "name"
+    paginate_by = 5
+    extra_context = {"title": "Все растения"}
+
+
+class PlantsMy(LoginRequiredMixin, generic.ListView):
+    template_name = "plants/list.html"
     model = Plant
     context_object_name = "plants"
     paginate_by = 5
+    extra_context = {"title": "Мои растения"}
+
+    def get_queryset(self):
+        return Plant.objects.filter(user=self.request.user).order_by("name")
 
 
-@method_decorator(login_required, name="dispatch")
-class PlantDetail(generic.DetailView):
+class PlantDetail(LoginRequiredMixin, generic.DetailView):
     model = Plant
     template_name = "plants/detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        all_messages = get_messages(self.request)
+        context["success_messages"] = [
+            m for m in all_messages if m.level == messages.SUCCESS
+        ]
+        return context
 
-@method_decorator(login_required, name="dispatch")
-class PlantCreate(generic.CreateView):
+
+class PlantCreate(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = "plants/create.html"
     model = Plant
-    fields = ["name", "name_alt", "name_en", "thumbnail"]
-    success_url = reverse_lazy("index")
+    fields = ["name", "name_lat", "name_en", "name_alt", "thumbnail"]
+    success_message = "Растение создано!"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("plants:detail", kwargs={"pk": self.object.pk})
 
 
-@method_decorator(login_required, name="dispatch")
-class PlantUpdate(generic.UpdateView):
+class PlantUpdate(LoginRequiredMixin, generic.UpdateView):
     template_name = "plants/update.html"
     model = Plant
     fields = ["name", "name_alt", "name_en", "thumbnail"]
 
 
-@method_decorator(login_required, name="dispatch")
-class PlantDelete(generic.DeleteView):
+class PlantDelete(LoginRequiredMixin, generic.DeleteView):
     model = Plant
 
 
-@method_decorator(login_required, name="dispatch")
-class PlantsSearch(generic.ListView):
+class PlantsSearch(LoginRequiredMixin, generic.ListView):
     template_name = "plants/search_results.html"
     model = Plant
     context_object_name = "plants"

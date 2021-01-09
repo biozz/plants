@@ -13,7 +13,7 @@ class PlantAdmin(admin.ModelAdmin):
     form = PlantAdminForm
     # inlines = [ImageInline]
 
-    list_display = ("name", "name_en", "name_alt")
+    list_display = ("name", "name_lat", "name_en", "name_alt")
 
 
 admin.site.register(Plant, PlantAdmin)

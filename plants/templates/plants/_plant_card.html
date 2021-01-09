@@ -8,13 +8,13 @@
         <div class="col-md-10">
             <div class="card-body">
                 <h5 class="card-title">{{ plant.name }}</h5>
-                {% if plant.name_alt or plant.name_en %}
-                <small class="text-muted">{{ plant.name_alt }}{% if plant.name_en %}, {{ plant.name_en }}{% endif %}</small><br>
+                {% if plant.name_lat %}
+                <small class="text-muted">Лат. {{ plant.name_lat }}</small><br>
                 {% endif %}
-                <small class="text-muted">Добавлено: {{ plant.created_at|date:"Y-m-d в H:m" }}</small>
-                {% if plant.where %}
-                    <p class="card-text">Где найти: {{ plant.where }}</p>
+                {% if plant.name_en %}
+                <small class="text-muted">Англ. {{ plant.name_en }}</small><br>
                 {% endif %}
+                <small class="text-muted">Добавлено: {{ plant.created_at|date:"Y-m-d в H:m" }}{% if plant.user %} ({{ plant.user }}){% endif %}</small>
                 {% if user.is_authenticated %}
                     <p><a href="{% url 'plants:detail' plant.id %}" class="card-link">Подробнее</a></p>
                 {% endif %}

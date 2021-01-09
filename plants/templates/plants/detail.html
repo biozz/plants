@@ -3,22 +3,39 @@
 {% block title %}{{ plant.name }}{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container pt-3">
+        {% if messages %}
+            <div class="row">
+                <div class="col">
+                    {% for message in success_messages %}
+                        <div class="alert alert-success" role="alert">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col">
-                <h1>{{ plant.name }}</h1>
-                <h5 class="text-muted">
-                    {% if plant.name_alt %} {{ plant.name_alt }}{% endif %}{% if plant.name_en %}, {{ plant.name_en }}{% endif %}</h5>
-                <p>{% if plant.wikipedia_url %}<a href="{{ plant.wikipedia_url }}" target="_blank">Wikipedia</a>{% endif %}
-                   {% if plant.plantnet_url %} <a href="#">Pl@ntNet</a> {% endif %}
-                   {% if plant.gbif_id %} <a href="#">GBIF</a>{% endif %}
-                </p>
-{#                {% if user.is_authenticated %}#}
-{#                    <a href="{% url 'plants:update' plant.pk %}" class="small">Редактировать</a>#}
-{#                {% endif %}#}
-                {% if user.is_staff or user.is_superuser %}
-                    <a href="{% url 'admin:plants_plant_change' plant.pk %}" class="small">Редактировать в админке</a>
+                <h1>{{ plant.name }}{% if plant.name_alt %} <span class="small text-muted">({{ plant.name_alt }}){% endif %}</span></h1>
+                {% if plant.name_lat %}<h5 class="small text-muted">Лат. {{ plant.name_lat }}</h5>{% endif %}
+                {% if plant.name_en %}<h5 class="small text-muted">Англ. {{ plant.name_en }}</h5>{% endif %}
+                {% if plant.wikipedia_url or plant.plantnet_url or gbif_id %}
+                    <h5 class="small text-muted">
+                        Ссылки:
+                        {% if plant.wikipedia_url %}
+                            <a href="{{ plant.wikipedia_url }}" target="_blank">Wikipedia</a>
+                        {% endif %}
+                        {% if plant.plantnet_url %}
+                            <a href="#">Pl@ntNet</a>
+                        {% endif %}
+                        {% if plant.gbif_id %}
+                            <a href="#">GBIF</a>
+                        {% endif %}
+                    </h5>
                 {% endif %}
+                <h5 class="text-muted small">Действия: <a href="{% url 'admin:plants_plant_change' plant.pk %}" class="small" target="_blank">Редактировать в админке</a>
+                                    {# <a href="{% url 'plants:update' plant.pk %}" class="small disabled">Редактировать</a> #}
+
+                </h5>
             </div>
         </div>
         <div class="row">

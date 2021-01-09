@@ -4,26 +4,48 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-6 offset-3">
-                <p class="mt-5 text-muted">Здесь только самая необходимая информация, остальное можно будет заполнить позже</p>
+                <div class="alert alert-info" role="alert">Здесь только самая необходимая информация, остальное можно будет заполнить
+                    позже</div>
+                {{ form.non_field.errors.as_text }}
                 <form action="{% url 'plants:create' %}" method="post">
                     {% csrf_token %}
                     <div class="mb-1 mt-4">
-                        <label for="{{ form.name.id_for_label }}">Название*</label>
-                        <input type="text" name="{{ form.name.html_name }}" class="form-control form-control-sm" id="{{ form.name.id_for_label }}" required>
+                        <label for="{{ form.name.id_for_label }}">Название</label>
+                        <div class="mb-1">
+                            <input type="text" name="{{ form.name.html_name }}" value="{% if form.is_bound %}{{ form.name.value }}{% endif %}"
+                                   class="form-control form-control-sm {% if form.name.errors %}is-invalid{% endif %}"
+                                   id="{{ form.name.id_for_label }}" required>
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.name.errors.as_text }}
+                                </div>
+                            {% endif %}
+                            <p class="text-muted small">Желательно без диакритических симоволов, чтобы потом поиск работал. Название с ударениями можно добавить ниже в "Альтернативные названия".</p>
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <label for="{{ form.name_lat.id_for_label }}">Название на латыни</label>
+                        <input type="text" name="{{ form.name_lat.html_name }}" class="form-control"
+                               id="{{ form.name_lat.id_for_label }}" value="{% if form.is_bound %}{{ form.name_lat.value }}{% endif %}">
+                        <p class="text-muted small">Без приписки "(лат.)"</p>
                     </div>
                     <div class="mb-1">
                         <label for="{{ form.name_en.id_for_label }}">Название на английском</label>
-                        <input type="text" name="{{ form.name_en.html_name }}" class="form-control" id="{{ form.name_en.id_for_label }}">
+                        <input type="text" name="{{ form.name_en.html_name }}" class="form-control"
+                               id="{{ form.name_en.id_for_label }}" value="{% if form.is_bound %}{{ form.name_en.value }}{% endif %}">
+                        <p class="text-muted small">Без приписки "Англ."</p>
                     </div>
                     <div class="mb-1">
                         <label for="{{ form.name_alt.id_for_label }}">Альтернативные названия</label>
-                        <input type="text" name="{{ form.name_alt.html_name }}" class="form-control" id="{{ form.name_alt.id_for_label }}">
+                        <input type="text" name="{{ form.name_alt.html_name }}" class="form-control"
+                               id="{{ form.name_alt.id_for_label }}" value="{% if form.is_bound %}{{ form.name_alt.value }}{% endif %}">
                     </div>
                     <div class="mb-1">
                         <label for="{{ form.thumbnail.id_for_label }}">Изображение</label>
-                        <input type="file" name="{{ form.thumbnail.html_name }}" class="form-control" id="{{ form.thumbnail.id_for_label }}">
+                        <input type="file" name="{{ form.thumbnail.html_name }}" class="form-control"
+                               id="{{ form.thumbnail.id_for_label }}" value="{% if form.is_bound %}{{ form.thumbnail.value }}{% endif %}">
                     </div>
                     <button type="submit" class="btn btn-primary">Добавить</button>
                 </form>
