@@ -5,6 +5,10 @@ from . import views
 app_name = "plants"
 
 urlpatterns = [
-    path("all/", views.AllPlants.as_view(), name="all"),
-    path("<int:pk>/", views.DetailView.as_view(), name="detail"),
+    path("all/", views.PlantsAll.as_view(), name="all"),
+    path("<int:pk>/", views.PlantDetail.as_view(), name="detail"),
+    path("create/", views.PlantCreate.as_view(), name="create"),
+    path("<int:pk>/update/", views.PlantUpdate.as_view(), name="update"),
+    path("<int:pk>/delete/", views.PlantDelete.as_view(), name="delete"),
+    path("search/", views.PlantsSearch.as_view(), name="search"),
 ]

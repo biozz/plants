@@ -1,5 +1,5 @@
 *.db
-/static/
+_static/
 
 # Editors
 .idea/

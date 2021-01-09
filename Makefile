@@ -12,7 +12,10 @@ clean:
 	find . -name '*.cache' | xargs rm -rf
 
 requirements:
-	poetry export -f requirements.txt --output requirements.txt 
+	poetry export -f requirements.txt --output requirements.txt
 
 dev_requirements:
 	poetry export -f requirements.txt --output requirements.txt --dev
+
+run:
+	DEBUG=True ./manage.py runserver

@@ -3,6 +3,7 @@ import uuid
 from typing import Optional
 
 from django.db import models
+from django.urls import reverse
 from djangoyearlessdate.models import YearlessDateField
 
 from .storages import ThumbnailsStorage
@@ -74,6 +75,9 @@ class Plant(models.Model):
             return None
 
         return (when - today).days
+
+    def get_absolute_url(self):
+        return reverse("plants:detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return f"{self.name}"
