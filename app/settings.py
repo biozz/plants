@@ -6,6 +6,7 @@ ENV = env.str("ENV", default="dev")
 BASE_DIR = environ.Path(__file__) - 2
 SECRET_KEY = env.str("SECRET_KEY", "change me")
 DEBUG = env.bool("DEBUG", default=False)
+DEBUG_PROPAGATE_EXCEPTIONS = env.bool("DEBUG_PROPAGATE_EXCEPTIONS", default=False)
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=["127.0.0.1"])
 
