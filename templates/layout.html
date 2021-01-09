@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     {% block extra_head %}{% endblock %}
@@ -25,8 +26,12 @@
                 <li class="nav-item"><a href="{{ plants_all }}"
                                         class="nav-link {% ifequal request.path plants_all %}active{% endifequal %}"
                                         aria-current="page">Все растения</a></li>
-                {% url 'plants:create' as plants_new %}
                 {% if user.is_authenticated %}
+                    {% url 'plants:my' as plants_my %}
+                    <li class="nav-item"><a href="{{ plants_my }}"
+                                        class="nav-link {% ifequal request.path plants_my %}active{% endifequal %}"
+                                        aria-current="page">Мои растения</a></li>
+                    {% url 'plants:create' as plants_new %}
                     <li class="nav-item"><a href="{{ plants_new }}"
                                             class="nav-link {% ifequal request.path plants_new %}active{% endifequal %}"
                                             aria-current="page">Добавить растение</a></li>
@@ -51,6 +56,13 @@
 <main>
     {% block content %}{% endblock %}
 </main>
+<footer class="container">
+    <div class="row">
+        <div class="col-12 text-end">
+            <small class="d-block mb-3 text-muted"><a href="https://github.com/biozz/plants">by biozz</a></small>
+        </div>
+    </div>
+</footer>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/cropper.min.js' %}"></script>
