@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-6 offset-3">
+            <div class="col-12">
                 <h1>Все растения</h1>
                 {% for plant in plants %}
                     {% include 'plants/_plant_card.html' %}
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 offset-3">
+            <div class="col-12">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
